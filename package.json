@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/boyangdong00/planets_csv_parser#readme",
   "dependencies": {
-    "csv-parse": "^4.15.1"
+    "csv-parse": "^4.15.1",
+    "prompts": "^2.4.2"
   }
 }
