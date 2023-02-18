@@ -4,7 +4,6 @@ const prompts = require("prompts");
 const ps = require("prompts");
 
 const results = [];
-const options = true;
 
 // // Planets have been confirmed and insol (amount of lights) has be greater than 0.36 and lower than max 1.11
 // // Indicate if possible life form can appear on the planets
@@ -18,20 +17,27 @@ function isHabitablePlanet(planet) {
 }
 
 //   console.log(`${results.length} number of planets has been founded`);
-//   // TODO: allow command line input
 
 const cli_questions = [
   {
     type: "text",
+    name: "csv_filepath",
+    message: "Please enter csv filepath",
+    initial: "cumulative_2023.02.15_07.54.00.csv", // default sample file
+  },
+  {
+    type: "text",
     name: "habitable",
     message: "Do you want to see planets that habitable?",
+    initial: "yes",
   },
 ];
 
 const cli_prompts = async () => {
   const resp = await prompts(cli_questions);
+  const filepath = resp.csv_filepath;
 
-  createReadStream("cumulative_2023.02.15_07.54.00.csv")
+  createReadStream(filepath)
     .pipe(
       parse({
         comment: "#",
@@ -40,7 +46,7 @@ const cli_prompts = async () => {
       })
     ) // readable stream to a writable stream
     .on("data", (data) => {
-      if (isHabitablePlanet(data) && resp.habitable === "yes") {
+      if (isHabitablePlanet(data) && resp.habitable.toLowerCase() === "yes") {
         results.push(data);
       }
     })
